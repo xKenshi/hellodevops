@@ -1,0 +1,54 @@
+Тестовое задание DevOps
+Задача
+
+Настроить и развернуть веб-приложение в Docker с использованием Ansible. Добавить:
+	•	CI/CD (GitHub Actions или GitLab CI/CD) для автоматического деплоя.
+	•	Мониторинг (Prometheus + Grafana) для сбора метрик.
+	•	Логирование (ELK или Loki + Promtail).
+	•	Traefik в качестве обратного прокси.
+	•	Хранение секретов через .env или HashiCorp Vault.
+
+Технические требования
+
+1. Инфраструктура
+	•	Использовать Docker Compose для оркестрации.
+	•	Развернуть:
+	•	Flask-приложение (Python 3.9+).
+	•	Traefik (обратный прокси с автоматическим HTTPS через Let’s Encrypt).
+	•	Prometheus + Grafana для мониторинга.
+	•	Loki + Promtail (или ELK) для логирования.
+	•	PostgreSQL для хранения данных.
+
+2. Автоматизация через Ansible
+	•	Автоматическая установка Docker, Docker Compose, Prometheus, Grafana, Loki, Traefik.
+	•	Развертывание всех сервисов через ansible-playbook.
+
+3. CI/CD
+	•	Использовать GitHub Actions или GitLab CI/CD:
+	•	Автоматическая сборка Docker-образа и пуш в Docker Hub.
+	•	Деплой на сервер через SSH и Ansible.
+	•	Проверка, что сервис работает после деплоя.
+
+4. Мониторинг и Логирование
+	•	Prometheus собирает метрики от Flask и Docker.
+	•	Grafana визуализирует метрики.
+	•	Loki + Promtail (или ELK) собирает логи.
+
+Файлы для проекта
+
+Flask-приложение (app.py)
+
+
+Dockerfile для Flask
+
+
+docker-compose.yml
+
+
+Prometheus Config (prometheus.yml)
+
+
+Ansible Playbook (playbook.yml)
+
+
+CI/CD (GitHub Actions)

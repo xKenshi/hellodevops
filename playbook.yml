@@ -1,0 +1,24 @@
+- name: Установка и деплой DevOps-стека
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Установить Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Установить Docker Compose
+      apt:
+        name: docker-compose
+        state: present
+
+    - name: Копировать .env
+      copy:
+        src: .env
+        dest: /home/user/app/.env
+
+    - name: Запустить Docker Compose
+      command: docker-compose up -d
+      args:
+        chdir: /home/user/app/

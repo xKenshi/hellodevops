@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v2.9
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  app:
+    build: .
+    labels:
+      - "traefik.http.routers.app.rule=Host(`localhost`)"
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+    networks:
+      - backend
+
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    networks:
+      - backend
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - monitoring
+
+  loki:
+    image: grafana/loki
+    ports:
+      - "3100:3100"
+    networks:
+      - logging
+
+  promtail:
+    image: grafana/promtail
+    volumes:
+      - /var/log:/var/log
+    networks:
+      - logging
+
+networks:
+  backend:
+  monitoring:
+  logging:
